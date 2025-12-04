@@ -1,0 +1,53 @@
+<!--
+  Author: Juan Vargas 
+  Project: KU Campus Exchange
+  File: signup.html
+  Description: Frontend for signup page
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Ku Campus Exchange</title>
+    <link rel="stylesheet" href="signup_style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Account</h1>
+        <div class="signup-box">
+            <form id="signupForm" action="signup.php" method="POST">
+                <input type="text" name="username" placeholder="Display Name" required>
+                <input type="email" id="email" name="email" placeholder="KU Email (@live.kutztown.edu)" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="repeat_password" name="repeat_password" placeholder="Repeat Password" required>
+
+                <button type="submit">Sign Up</button>
+            </form>
+            <p class="redirect">Already have an account? <a href="Kuweblogin.php">Log in</a></p>
+        </div>
+    </div>
+
+<script>
+document.getElementById('signupForm').addEventListener('submit', function(event) {
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value;
+    const repeat = document.getElementById('repeat_password').value;
+    const allowedDomain = '@live.kutztown.edu';
+
+    if (!email.endsWith(allowedDomain)) {
+        alert("Please use your @live.kutztown.edu email address.");
+        event.preventDefault();
+        return;
+    }
+
+    if (pass !== repeat) {
+        alert("Passwords do not match.");
+        event.preventDefault();
+        return;
+    }
+});
+</script>
+
+</body>
+</html>

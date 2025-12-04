@@ -1,0 +1,45 @@
+/******************************************************
+ * Author: Juan Vargas
+ * Project: KU Campus Exchange
+ * File: contact.css
+ * Description: Stylesheet for contact us page
+ ******************************************************/
+body{
+  background: linear-gradient(to bottom, rgb(182,162,104), rgb(112,25,49));
+  min-height:100vh;
+  margin:0;
+  font-family: Arial, sans-serif;
+}
+
+h1{
+  text-align:center;
+  color:white;
+  margin-top:40px;
+  font-size:60px;
+}
+
+.box{
+  margin:40px auto;
+  background:white;
+  padding:25px;
+  max-width:450px;
+  border-radius:12px;
+  text-align:center;
+  font-size:18px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 20px;
+  background:#007bff;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  border-radius:8px;
+}
+
+.btn:hover{
+  background:#0056b3;
+}

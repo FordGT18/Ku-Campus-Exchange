@@ -1,0 +1,97 @@
+<!--
+  Author: Juan Vargas and Samar Gill
+  Project: KU Campus Exchange
+  File: messages.html
+  Description: Front end for message portal and script for refreshing forum every 5 seconds
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Messages about <?= htmlspecialchars($itemName) ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="messages.css">
+</head>
+<body>
+<div class="messages-wrap">
+  <div class="top-actions">
+    <a class="btn secondary" href="Marketplace.php">← Back to Marketplace</a>
+    <a class="btn secondary" href="profile.php">My Profile</a>
+  </div>
+
+  <div class="card">
+    <h2>Conversation about: <span class="item-name"><?= htmlspecialchars($itemName) ?></span></h2>
+    <p class="meta-line">
+      <strong>Seller:</strong> <?= htmlspecialchars($sellerName) ?><br>
+      <strong>You:</strong> <?= htmlspecialchars($currentDisplayName) ?>
+    </p>
+
+    <?php if (!empty($errors)): ?>
+      <?php foreach ($errors as $e): ?>
+        <div class="alert err"><?= htmlspecialchars($e) ?></div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+
+    <div class="messages-thread">
+      <?php if (!$messages): ?>
+        <p class="empty-thread">No messages yet. Start the conversation!</p>
+      <?php else: ?>
+        <?php foreach ($messages as $m): 
+          $senderName = $m['sender_display_name'] ?? $m['username'] ?? 'User';
+          $isMe = ((int)$m['sender_id'] === $currentUserId);
+        ?>
+          <div class="message-row <?= $isMe ? 'me' : 'them' ?>">
+            <div class="message-bubble">
+              <div class="sender-name"><?= htmlspecialchars($senderName) ?></div>
+              <div class="body"><?= nl2br(htmlspecialchars($m['body'])) ?></div>
+              <div class="timestamp">
+                <?= htmlspecialchars($m['created_at']) ?>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
+
+    <form class="message-form" action="messages.php?item_id=<?= (int)$itemId ?>" method="post">
+      <textarea name="body" placeholder="Type your message or counter offer..." required></textarea>
+      <button class="btn" type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+<script>
+//  auto-refresh using polling
+const itemId = <?= (int)$itemId ?>;
+
+function refreshMessages() {
+    const thread = document.querySelector('.messages-thread');
+    if (!thread) return;
+
+    fetch('messages_api.php?item_id=' + encodeURIComponent(itemId), {
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network error');
+        return response.text();
+    })
+    .then(html => {
+        const atBottom = thread.scrollTop + thread.clientHeight >= thread.scrollHeight - 5;
+        thread.innerHTML = html;
+        if (atBottom) {
+            thread.scrollTop = thread.scrollHeight;
+        }
+    })
+    .catch(err => {
+        console.error('Error refreshing messages:', err);
+    });
+}
+
+// Initial refresh
+refreshMessages();
+// Refresh every 5 seconds
+setInterval(refreshMessages, 5000);
+</script>
+</body>
+</html>

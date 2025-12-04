@@ -1,0 +1,107 @@
+/******************************************************
+ * Author: Juan Vargas 
+ * Project: KU Campus Exchange
+ * File: signup_style.css
+ * Description: Stylesheet for signup page
+ ******************************************************/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #b6a268, #701931);
+    color: #000;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 2.5em;
+}
+
+
+.signup-box {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    color: black;
+    background-color: #fff;
+}
+
+
+::placeholder {
+    color: #888;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #701931;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #ff6ec4;
+    transform: scale(1.03);
+}
+
+.redirect {
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.redirect a {
+    color: #701931;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.redirect a:hover {
+    color: #ff6ec4;
+}
+
+@media (max-width: 450px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .signup-box {
+        padding: 20px 15px;
+    }
+}

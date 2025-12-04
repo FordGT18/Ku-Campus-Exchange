@@ -1,0 +1,48 @@
+<!--
+  Author: Juan Vargas 
+  Project: KU Campus Exchange
+  File: upload.html
+  Description: Frontend for uploading images
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Upload Item</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="hero">
+        <form id="upload-form" action="upload.php" method="POST" enctype="multipart/form-data">
+            
+            <label for="input-file" id="drop-area">
+                <input type="file" name="item_images[]" id="input-file" accept="image/*" hidden multiple required>
+                <div id="img-view">
+                    <img src="upload_icon.png" alt="Upload Icon">
+                    <p>Drag & Drop or Click Here</p>
+                    <span>Upload up to 5 images from your device</span>
+                </div>
+            </label>
+
+            <div id="preview-thumbs" class="preview-thumbs"></div>
+
+            <input type="text" name="item_name" placeholder="Item Name" required><br><br>
+            <input type="number" name="item_price" placeholder="Price ($)" required><br><br>
+            <textarea name="item_desc" placeholder="Item Description" required></textarea><br><br>
+            <select name="item_category" required>
+                <option value="">Select Category</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Vehicles">Vehicles</option>
+            </select><br><br>
+
+            <button type="submit" class="submit-upload">Upload Item</button>
+        </form>
+    </div>
+
+    <script src="script.js?v=nov11-7"></script>
+
+</body>
+</html>

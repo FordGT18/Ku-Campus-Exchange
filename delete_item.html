@@ -1,0 +1,31 @@
+<!--
+  Author: Juan Vargas
+  Project: KU Campus Exchange
+  File: delete_item.html
+  Description: front end for deleting a item on profile/Marketplace
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Delete Item</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="delete_item.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h2>Delete Item</h2>
+    <p>Are you sure you want to permanently delete <strong><?= htmlspecialchars($item['item_name'] ?? 'this item') ?></strong>?</p>
+    <form method="post" action="delete_item.php">
+      <input type="hidden" name="id" value="<?= (int)$item['id'] ?>">
+      <div class="actions">
+        <button class="btn danger" type="submit">Yes, delete</button>
+        <a class="btn secondary" href="profile.php">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

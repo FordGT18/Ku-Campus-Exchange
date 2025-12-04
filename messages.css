@@ -1,0 +1,124 @@
+/******************************************************
+ * Author: Juan Vargas
+ * Project: KU Campus Exchange
+ * File: messages.css
+ * Description: Stylesheet for message portal
+ ******************************************************/
+.messages-wrap {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+.top-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.btn {
+    padding: .5rem .85rem;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 0;
+    background: #6b46c1;
+    color: #fff;
+}
+
+.btn.secondary {
+    background: #e7e7ef;
+    color: #333;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    padding: 16px;
+}
+
+.item-name {
+    color: #4a46c1;
+}
+
+.meta-line {
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.alert {
+    padding: .6rem .75rem;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+.alert.err {
+    background:#fdecea;
+    color:#8a1f17;
+    border:1px solid #f5c2c0;
+}
+
+.messages-thread {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f7f7fb;
+    margin-bottom: 12px;
+}
+
+.empty-thread {
+    color: #777;
+}
+
+.message-row {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.message-row.me {
+    justify-content: flex-end;
+}
+
+.message-row.them {
+    justify-content: flex-start;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,.05);
+}
+
+.message-row.me .message-bubble {
+    background: #e6e3ff;
+}
+
+.sender-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.body {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.timestamp {
+    font-size: 11px;
+    color: #777;
+    text-align: right;
+}
+
+.message-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: .6rem .7rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+    resize: vertical;
+}

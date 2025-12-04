@@ -1,0 +1,202 @@
+<!--
+  Author: Juan Vargas and Samar Gill
+  Project: KU Campus Exchange
+  File: profile.html
+  Description: Frontend/Backend for profile page
+  being able to see listings, edit, delete, marking sold,
+  conversation panels 
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="profile.css">
+</head>
+<body>
+<div class="profile-wrap">
+  <div class="top-actions">
+    <a class="btn secondary" href="Marketplace.php">← Back to Marketplace</a>
+    <div>
+      <a class="btn secondary" href="upload.html">Upload Item</a>
+      <a class="btn secondary" href="logout.php">Logout</a>
+    </div>
+  </div>
+
+  <?php if (!empty($success)): ?>
+    <div class="alert ok"><?= htmlspecialchars($success) ?></div>
+  <?php endif; ?>
+
+  <?php if (!empty($errors)): ?>
+    <?php foreach ($errors as $e): ?>
+      <div class="alert err"><?= htmlspecialchars($e) ?></div>
+    <?php endforeach; ?>
+  <?php endif; ?>
+
+  <div class="profile-card">
+    <img class="avatar" src="<?= htmlspecialchars($avatarPath) ?>" alt="Avatar">
+    <div class="profile-meta">
+      <h2><?= htmlspecialchars($displayName ?: ($user['username'] ?? 'My Profile')) ?></h2>
+      <small><?= htmlspecialchars($user['email'] ?? '') ?></small>
+
+      <form method="post" enctype="multipart/form-data" class="note">
+        <label class="inline">Display name</label>
+        <input type="text" name="display_name" value="<?= htmlspecialchars($displayName) ?>">
+
+        <label class="inline">Avatar (optional)</label>
+        <input type="file" name="avatar" accept="image/*">
+
+        <button class="update-btn" type="submit">Update Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <h3 class="section-title">My Items</h3>
+  <div class="profile-grid">
+    <?php if (!$myItems): ?>
+      <p>No items yet. <a href="upload.html">Upload one</a>.</p>
+    <?php else: ?>
+      <?php foreach ($myItems as $it): ?>
+        <?php
+          $imgStmt->execute([':id'=>$it['id']]);
+          $images = $imgStmt->fetchAll(PDO::FETCH_COLUMN, 0) ?: [];
+          if (!$images && !empty($it['image_path'])) {
+            $images = [$it['image_path']];
+          }
+          $thumb = $images[0] ?? 'placeholder.png';
+          $priceVal = is_numeric($it['item_price']) ? (float)$it['item_price'] : 0.0;
+          $price = '$'.number_format($priceVal, 2);
+
+          $val = $it['is_sold'] ?? null;
+          $isSold = ($val === true || $val === 1 || $val === '1' || $val === 't');
+        ?>
+        <div class="profile-item">
+          <img src="<?= htmlspecialchars($thumb) ?>" alt=""
+               onclick='openModal(
+                 <?= json_encode($it["item_name"] ?? "", JSON_UNESCAPED_SLASHES) ?>,
+                 <?= json_encode($images) ?>,
+                 <?= json_encode($price) ?>
+               )'>
+
+          <p><strong><?= htmlspecialchars($it['item_name'] ?? '') ?></strong></p>
+          <p><?= htmlspecialchars($price) ?></p>
+          <small><?= htmlspecialchars($it['item_category'] ?? '') ?></small><br>
+
+          <form action="edit_item.php" method="get" style="display:inline;">
+            <input type="hidden" name="id" value="<?= (int)$it['id'] ?>">
+            <button class="update-btn subtle" type="submit">Edit</button>
+          </form>
+
+          <form action="delete_item.php" method="get" style="display:inline;">
+            <input type="hidden" name="id" value="<?= (int)$it['id'] ?>">
+            <button class="update-btn danger subtle" type="submit">Delete</button>
+          </form>
+
+          <?php if (!$isSold): ?>
+            <form action="mark_sold.php" method="post" style="display:inline;">
+              <input type="hidden" name="id" value="<?= (int)$it['id'] ?>">
+              <button class="update-btn subtle" type="submit">Mark Sold</button>
+            </form>
+          <?php else: ?>
+            <span class="sold-label">Sold ✅</span>
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </div>
+</div>
+
+
+<div class="messages-summary">
+  <!-- Panel 1: messages about my items -->
+  <div class="messages-panel">
+    <h4>Messages about my items</h4>
+    <?php if (empty($sellerConversations)): ?>
+      <p class="muted">No one has messaged you about your items yet.</p>
+    <?php else: ?>
+      <ul class="messages-list">
+        <?php foreach ($sellerConversations as $c): ?>
+          <li>
+            <div class="conv-main">
+              <div>
+                <div class="conv-user">
+                  <?= htmlspecialchars($c['other_display_name']) ?>
+                </div>
+                <div class="conv-item">
+                  Item: <?= htmlspecialchars($c['item_name']) ?>
+                </div>
+              </div>
+              <span class="conv-count">
+                <?= (int)$c['message_count'] ?> message<?= ((int)$c['message_count'] !== 1 ? 's' : '') ?>
+              </span>
+            </div>
+            <div class="conv-meta">
+              <span class="conv-date">
+                Last: <?= htmlspecialchars($c['last_message_at']) ?>
+              </span>
+              <a class="btn small" href="messages.php?item_id=<?= (int)$c['item_id'] ?>">
+                Open chat
+              </a>
+            </div>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </div>
+
+  <!-- Panel 2: messages I’ve sent -->
+  <div class="messages-panel">
+    <h4>Messages I’ve sent</h4>
+    <?php if (empty($buyerConversations)): ?>
+      <p class="muted">You haven’t messaged any sellers yet.</p>
+    <?php else: ?>
+      <ul class="messages-list">
+        <?php foreach ($buyerConversations as $c): ?>
+          <li>
+            <div class="conv-main">
+              <div>
+                <div class="conv-user">
+                  <?= htmlspecialchars($c['other_display_name']) ?>
+                </div>
+                <div class="conv-item">
+                  Item: <?= htmlspecialchars($c['item_name']) ?>
+                </div>
+              </div>
+              <span class="conv-count">
+                <?= (int)$c['message_count'] ?> message<?= ((int)$c['message_count'] !== 1 ? 's' : '') ?>
+              </span>
+            </div>
+            <div class="conv-meta">
+              <span class="conv-date">
+                Last: <?= htmlspecialchars($c['last_message_at']) ?>
+              </span>
+              <a class="btn small" href="messages.php?item_id=<?= (int)$c['item_id'] ?>">
+                Open chat
+              </a>
+            </div>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
+  </div>
+</div>
+
+<div id="item-modal" class="modal" style="display:none">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="gallery">
+      <button id="gallery-prev" class="gallery-arrow">&lt;</button>
+      <div id="gallery-main" class="gallery-main"></div>
+      <button id="gallery-next" class="gallery-arrow">&gt;</button>
+    </div>
+    <div id="gallery-thumbs" class="gallery-thumbs"></div>
+    <h2 id="modal-title"></h2>
+    <p id="modal-price"></p>
+  </div>
+</div>
+
+<script src="script.js?v=nov13p"></script>
+</body>
+</html>
