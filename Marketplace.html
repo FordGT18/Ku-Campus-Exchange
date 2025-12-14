@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Ku Campus Marketplace</h2>
+        <ul>
+            <li onclick="filterCategory('All')">All Items</li>
+            <li onclick="filterCategory('Electronics')">Electronics</li>
+            <li onclick="filterCategory('Clothing')">Clothing</li>
+            <li onclick="filterCategory('Furniture')">Furniture</li>
+            <li onclick="filterCategory('Vehicles')">Vehicles</li>
+        </ul>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <input type="text" id="search-bar" class="search-bar" placeholder="Search items..." onkeyup="searchItems()">
+
+        <div class="grid" id="marketplace">
+            <div class="item" data-category="Electronics" onclick="openModal('Laptop', 'images/laptop.jpg', '$100')">
+                <img src="Images/laptop.jpg" alt="Laptop">
+                <p>Laptop - $100 each</p>
+                <p>Used - Good condition</p>
+                <p>NO questions asked on how acquired!</p>
+                <p>Please contact if interested</p>
+            </div>
+            <div class="item" data-category="Clothing" onclick="openModal('T-Shirt', 'images/tshirt.jpg', '$25')">
+                <img src="Images/tshirt.jpg" alt="T-Shirt">
+                <p>T-Shirt - $25</p>
+                <p>Size - Medium</p>
+                <p>Please contact if interested/any other questions!</p>
+            </div>
+            <div class="item" data-category="Furniture" onclick="openModal('Chair', 'images/chair.jpg', '$120')">
+                <img src="Images/chair.jpg" alt="Chair">
+                <p>Chair - $120</p>
+                <p>Used - Good condition</p>
+                <p>Will Take offers on price</p>
+            </div>
+            <div class="item" data-category="Vehicles" onclick="openModal('Wrx', 'images/Wrx.jpeg', '$20000')">
+                <img src="Images/Wrx.jpeg" alt="Wrx">
+                <p>2022 Wrx - $20,000</p>
+                <p>Basically Brand New</p>
+                <p>Low miles, Barely Driven</p>
+            </div>
+            <div class="item" data-category="Vehicles" onclick="openModal('Evo X', 'images/Evo.jpg', '$15000')">
+                <img src="Images/Evo.jpg" alt="Evo">
+                <p>2013 Evo X - $15,000</p>
+                <p>Low mileage, No issues, Good condition</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Details Modal -->
+    <div id="item-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-img" src="" alt="Item Image">
+            <h2 id="modal-title"></h2>
+            <p id="modal-price"></p>
+        </div>
+    </div>
+    
+
+    <script src="script.js"></script>
+
+</body>
+</html>
